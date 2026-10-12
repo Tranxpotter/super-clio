@@ -1,0 +1,68 @@
+{
+  "name": "ROS2 Humble Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "runArgs": [
+    "--privileged",
+    "--gpus", "all",
+    "-e", "NVIDIA_DRIVER_CAPABILITIES=all",
+    "-e", "NVIDIA_VISIBLE_DEVICES=all",
+    "--net", "host",
+    "--ipc", "host",
+    "--shm-size", "4gb",
+    "-v", "/tmp/.X11-unix:/tmp/.X11-unix:rw",
+    "-e", "DISPLAY=${localEnv:DISPLAY}"
+  ],
+  "remoteUser": "root",
+  "remoteEnv": {
+    "DISPLAY": "${localEnv:DISPLAY}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-extension-pack",
+        "ms-iot.vscode-ros",
+        "xaver.clang-format",
+        "twxs.cmake",
+        "ms-vscode.cmake-tools"
+      ],
+      "settings": {
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bash"
+          }, 
+          "zsh": {
+            "path": "zsh"
+          }
+        },
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      }
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "installOhMyZshConfig": true,
+      "configureZshAsDefaultShell": true,
+      "username": "vscode"
+    }, 
+    "ghcr.io/devcontainers-extra/features/zsh-plugins:0": {
+      "plugins": "zsh-autosuggestions zsh-syntax-highlighting",
+      "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions.git https://github.com/zsh-users/zsh-syntax-highlighting.git"
+    }
+  },
+  "mounts": [
+    {
+      "source": "${localWorkspaceFolder}/.devcontainer/.zshrc",
+      "target": "/root/.zshrc",
+      "type": "bind"
+    }
+  ],
+  "postCreateCommand": "bash .devcontainer/setup_zsh.sh"
+}
