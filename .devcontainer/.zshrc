@@ -142,4 +142,6 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 zstyle ':omz:update' mode disabled
 source /opt/ros/humble/setup.zsh
-source /opt/ros/humble/setup.zsh
+
+export ROS_LOCALHOST_ONLY=1
+# export ROS_DOMAIN_ID=42

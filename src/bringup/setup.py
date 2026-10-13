@@ -28,6 +28,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
+            'livox_flip_node=bringup.livox_flip_node:main',
         ],
     },
 )

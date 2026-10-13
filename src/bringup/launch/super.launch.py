@@ -17,7 +17,18 @@ def generate_launch_description():
     super_odom_dir = get_package_share_directory("super_odometry")
 
     # Declare launch arguments
-
+    flip = Node(
+        package="bringup", 
+        executable="livox_flip_node", 
+        name="livox_flip_node", 
+        output="screen", 
+        parameters=[{
+            "input_lidar_topic":"/livox/lidar", 
+            "output_lidar_topic":"/livox/lidar_flipped", 
+            "input_imu_topic": "/livox/imu", 
+            "output_imu_topic": "/livox/imu_flipped"
+        }]
+    )
 
     super_odom = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -40,6 +51,7 @@ def generate_launch_description():
 
 
     return LaunchDescription([
+        flip, 
         super_odom, 
         rviz, 
     ])

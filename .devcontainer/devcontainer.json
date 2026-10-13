@@ -4,16 +4,19 @@
     "dockerfile": "Dockerfile",
     "context": ".."
   },
+  "privileged": true,
+  "containerEnv": {
+    "NVIDIA_DRIVER_CAPABILITIES": "all", 
+    "NVIDIA_VISIBLE_DEVICES": "all", 
+    "DISPLAY": "${localEnv:DISPLAY}", 
+    "ROS_LOCALHOST_ONLY": "1", 
+    "ROS_DOMAIN_ID": "42"
+  },
   "runArgs": [
-    "--privileged",
     "--gpus", "all",
-    "-e", "NVIDIA_DRIVER_CAPABILITIES=all",
-    "-e", "NVIDIA_VISIBLE_DEVICES=all",
     "--net", "host",
     "--ipc", "host",
-    "--shm-size", "4gb",
-    "-v", "/tmp/.X11-unix:/tmp/.X11-unix:rw",
-    "-e", "DISPLAY=${localEnv:DISPLAY}"
+    "--shm-size", "4gb"
   ],
   "remoteUser": "root",
   "remoteEnv": {
@@ -57,12 +60,21 @@
       "omzPlugins": "https://github.com/zsh-users/zsh-autosuggestions.git https://github.com/zsh-users/zsh-syntax-highlighting.git"
     }
   },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/root/ros2_ws,type=bind",
+  "workspaceFolder": "/root/ros2_ws",
   "mounts": [
     {
       "source": "${localWorkspaceFolder}/.devcontainer/.zshrc",
       "target": "/root/.zshrc",
       "type": "bind"
-    }
+    }, 
+    {
+      "source": "${localWorkspaceFolder}/.colcon/defaults.yaml", 
+      "target": "/root/.colcon/defaults.yaml", 
+      "type": "bind"
+    }, 
+    "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind,consistency=cached", 
+    "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
   ],
   "postCreateCommand": "bash .devcontainer/setup_zsh.sh"
 }
